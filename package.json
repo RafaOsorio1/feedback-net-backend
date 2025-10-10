@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "schemaFormat": "prisma format",
     "dev": "tsx watch src/main.ts",
-    "schemaFormat": "prisma format"
+    "build": "tsc",
+    "start": "node dist/main.js"
   },
   "keywords": [],
   "author": "",
