@@ -22,19 +22,19 @@ export async function loginUserUseCase(
   credentials: LoginCredentials,
 ): Promise<LoginResponse> {
   const database = databaseManager.getDatabase();
-  const user = await database.user.findUnique({
+  const ISP = await database.iSP.findUnique({
     where: {
       email: credentials.email,
     },
   });
 
-  if (!user) {
+  if (!ISP) {
     throw new Error("Invalid credentials");
   }
 
   const isPasswordValid = await comparePassword(
     credentials.password,
-    user.password,
+    ISP.password,
   );
 
   if (!isPasswordValid) {
@@ -42,9 +42,9 @@ export async function loginUserUseCase(
   }
 
   const payload: JwtPayload = {
-    id: user.id,
-    email: user.email,
-    name: user.name,
+    id: ISP.id,
+    email: ISP.email,
+    name: ISP.name,
   };
 
   const token = await generateJWT(payload);
@@ -52,11 +52,11 @@ export async function loginUserUseCase(
   return {
     token,
     user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      address: user.address,
-      phone: user.phone,
+      id: ISP.id,
+      email: ISP.email,
+      name: ISP.name,
+      address: ISP.address || "",
+      phone: ISP.phone || "",
     },
   };
 }
